@@ -116,7 +116,7 @@ setCookie(COOKIE_NAME, $totalSpentValue, time() + (86400 * 30), "/");
             
         <button type="submit" class="btn btn-primary">Order!</button>
     </form>
-    <div>Total for current order: <strong>&euro; <?php //echo $orderValue; ?></strong></div>
+    <div>Total for current order: <strong>&euro; <?php echo $totalValue; ?></strong></div>
 
     <footer>In the last 30 days you've ordered <strong>&euro; <?php echo $totalSpentValue; ?></strong> in food and drinks.</footer>
 </div>
