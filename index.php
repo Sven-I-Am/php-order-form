@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 //we are going to use session variables, so we need to enable sessions
 session_start();
-
+//$currentOrder =[];
+//$totalValue = 0;
 //your products with their price.
 if(!isset($_GET["food"]) || $_GET["food"]!=0){
     $products = [
@@ -14,6 +15,8 @@ if(!isset($_GET["food"]) || $_GET["food"]!=0){
         ['name' => 'Club Chicken', 'price' => 4],
         ['name' => 'Club Salmon', 'price' => 5]
     ];
+//    $currentOrder += getProducts();
+//    $totalValue += getTotalValue($currentOrder);
 } else {
     $products = [
         ['name' => 'Cola', 'price' => 2],
@@ -21,16 +24,14 @@ if(!isset($_GET["food"]) || $_GET["food"]!=0){
         ['name' => 'Sprite', 'price' => 2],
         ['name' => 'Ice-tea', 'price' => 3],
     ];
+//    $currentOrder += getProducts();
+//    $totalValue += getTotalValue($currentOrder);
 }
+//var_dump($currentOrder);
 const COOKIE_NAME = "totalSpent";
 $totalValue = 0;
 $totalSpentValue = 0;
-define("REST_EMAIL", "sven.vander.mierde@gmail.com");
-
-if(!isset($_GET["prodInput"])){
-    $order = getProducts();
-    $totalValue = getTotalValue($order);
-}
+const REST_EMAIL = "sven.vander.mierde@gmail.com";
 
 //check and validate email
 function validateEmail($email) : string
@@ -123,7 +124,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $express = false;
     }
     if ($error == 0){
-
         $mailToUser = "Thank you for ordering with us!\nDelivery adress: \n" . $street . " " . $strNumber. "\n"."Zipcode: " . $zipcode . " - City: " . $city . "\n";
         foreach($order as $prod){
             if($prod["quantity"]!=0){
@@ -139,16 +139,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mail($email, "We got your order", $mailToUser);
         $success = '<h2>Order sent successfully. Check your inbox!</h2>
                     Your order is: <br>';
-
     }
 }
 
 function getProducts(): array
 {
+    $productsOrder = $_REQUEST["products"];
     global $products;
     $i = 0;
     $order = [];
-    foreach($_POST['products'] as $product) {
+    foreach($productsOrder as $product) {
         $name = $products[$i]["name"];
         $price = $products[$i]["price"];
         $price = (float)$price;
@@ -180,6 +180,6 @@ function whatIsHappening() {
     var_dump($_SESSION);
 }
 
-//whatIsHappening();
+whatIsHappening();
 
 require 'form-view.php';
