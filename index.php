@@ -143,8 +143,6 @@ function whatIsHappening() {
     var_dump($_SESSION);
 }
 
-whatIsHappening();
-
-
+//whatIsHappening();
 
 require 'form-view.php';
