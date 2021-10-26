@@ -18,6 +18,7 @@ setCookie(COOKIE_NAME, $totalSpentValue, time() + (86400 * 30), "/");
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css"
           rel="stylesheet"/>
+    <link type="text/css" rel="stylesheet" href="style.css">
     <title>Order food & drinks</title>
 </head>
 <body>
@@ -54,7 +55,17 @@ setCookie(COOKIE_NAME, $totalSpentValue, time() + (86400 * 30), "/");
         echo '<div class="alert alert-danger">' . $orderError . '</div>';
     }
     if ($success!=''){
-        echo '<div class="alert alert-success">' . $success . '</div>';
+        echo '<div class="alert alert-success">' . $success;
+        foreach($order as $prod){
+            if($prod["quantity"]!=0){
+                echo $prod["name"] . " x " . $prod["quantity"] . " = &euro;" . $prod["productTotal"] . "<br>";
+            }
+        }
+        if ($express == true){
+            echo "Express-delivery = &euro;" . $expressPrice;
+        }
+        echo '<p><strong>Ordertotal: &euro;' . $totalValue . '</strong></p>
+                Estimated deliverytime: ' . $deliveryTime . '</div>';
     }
     ?>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
@@ -93,7 +104,7 @@ setCookie(COOKIE_NAME, $totalSpentValue, time() + (86400 * 30), "/");
             <legend>Products</legend>
             <?php foreach ($products AS $i => $product): ?>
                 <label>
-                    <input type="checkbox" value="<?php echo $product['price']; ?>" name="products[]"/> <?php echo $product['name'] ?> -
+                    <input type="number" min="0" value="0" name="products[]"/> <?php echo $product['name'] ?> -
                     &euro; <?php echo number_format($product['price'], 2) ?></label><br />
             <?php endforeach; ?>
         </fieldset>

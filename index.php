@@ -86,6 +86,8 @@ function validateZipcode($zip): string
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $error = 0;
+    $i = 0;
+    $order = [];
     $email = $_POST["email"];
     $emailError = validateEmail($email);
     if($emailError!=''){$error++;}
@@ -101,21 +103,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $zipcode = $_POST["zipcode"];
     $zipcodeError = validateZipcode($zipcode);
     if($zipcodeError!=''){$error++;}
-    if(!empty($_POST['products'])) {
-        foreach($_POST['products'] as $product) {
-            $price = $product;
-            $price = (float)$price;
-            $totalValue += $price;
-        }
-    } else {
+    foreach($_POST['products'] as $product) {
+        $name = $products[$i]["name"];
+        $price = $products[$i]["price"];
+        $price = (float)$price;
+        $quantity = $product;
+        $productTotal = $quantity * $price;
+        $productOrder = ['name'=>$name, 'price'=>$price, 'quantity'=>$quantity,'productTotal'=>$productTotal];
+        $totalValue += $productTotal;
+        array_push($order, $productOrder);
+        $i++;
+    }
+    if($totalValue==0) {
         $error++;
         $orderError = "please select products to order";
     }
     if(isset($_POST["express_delivery"])){
         $deliveryTime = '45 minutes';
-        $price = $_POST["express_delivery"];
-        $price = (float)$price;
-        $totalValue += $price;
+        $expressPrice = $_POST["express_delivery"];
+        $expressPrice = (float)$expressPrice;
+        $totalValue += $expressPrice;
         $express = true;
     } else {
         $deliveryTime = '2 hours';
@@ -124,11 +131,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($error == 0){
 
-        $mailToUser = "Thank you for ordering with us!\nDelivery adress: \n" . $street . " " . $strNumber. "\n Zipcode: " . $zipcode . " - City: " . $city . "\n Order cost: " . $totalValue . "\n Deliverytime: " . $deliveryTime . "\n Exress: " . $express;
+        /*$mailToUser = "Thank you for ordering with us!\nDelivery adress: \n" . $street . " " . $strNumber. "\n Zipcode: " . $zipcode . " - City: " . $city . "\n";
+        foreach($order as $prod){
+            if($prod["quantity"]!=0){
+                $mailToUser.= $prod["name"] . " x " . $prod["quantity"] . " = &euro;" . $prod["productTotal"] . "\n";
+            }
+        }
+        if ($express == true){
+            $mailToUser .= "Express-delivery = &euro;" . $expressPrice;
+        }
+        $mailToUser .= 'Ordertotal: &euro;' . $totalValue . '\n Estimated delivery time: ' . $deliveryTime . '\n';
         $mailToOwner = "We got an order in!\n" . $mailToUser;
         mail(REST_EMAIL, "new order!", $mailToOwner);
-        mail($email, "We got your order", $mailToUser);
-        $success = 'Order sent successfully. Check your inbox!';
+        mail($email, "We got your order", $mailToUser);*/
+        $success = '<h2>Order sent successfully. Check your inbox!</h2>
+                    Your order is: <br>';
+
     }
 }
 
