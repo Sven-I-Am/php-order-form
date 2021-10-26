@@ -1,14 +1,15 @@
 <!doctype html>
 <?php
-if (isset($_COOKIE[COOKIE_NAME]))
+if (isset($_COOKIE["totalSpent"]))
 {
-$totalSpentValue = $_COOKIE[COOKIE_NAME] + $totalValue;
+$totalSpentValue = $_COOKIE["totalSpent"] + $totalValue;
 }
 else
 {
 $totalSpentValue += $totalValue;
 }
-setCookie(COOKIE_NAME, $totalSpentValue, time() + (86400 * 30), "/");
+setCookie("totalSpent", $totalSpentValue, time() + (86400 * 30), "/");
+
 ?>
 <html lang="en">
 <head>
@@ -104,7 +105,7 @@ setCookie(COOKIE_NAME, $totalSpentValue, time() + (86400 * 30), "/");
             <legend>Products</legend>
             <?php foreach ($products AS $i => $product): ?>
                 <label>
-                    <input type="number" min="0" value="0" name="products[]"/> <?php echo $product['name'] ?> -
+                    <input type="number" min="0" value="0" name="products[<?php echo $i; ?>]"/> <?php echo $product['name'] ?> -
                     &euro; <?php echo number_format($product['price'], 2) ?></label><br />
             <?php endforeach; ?>
         </fieldset>
@@ -114,11 +115,11 @@ setCookie(COOKIE_NAME, $totalSpentValue, time() + (86400 * 30), "/");
             Express delivery (+ 5 EUR) 
         </label>
             
-        <button type="submit" class="btn btn-primary">Order!</button>
+        <button type="submit" class="btn <?php if($addToOrder==true){echo 'btn-warning"> Add to order!';}else{echo 'btn-primary"> Place order!';} ?></button>
     </form>
-    <div>Total for current order: <strong>&euro; <?php echo $totalValue; ?></strong></div>
+    <div>Total for current order: <strong>&euro; <?php echo $_SESSION["basketTotal"]; ?></strong></div>
 
-    <footer>In the last 30 days you've ordered <strong>&euro; <?php echo $totalSpentValue; ?></strong> in food and drinks.</footer>
+    <footer>You've ordered a total of <strong>&euro; <?php echo $totalSpentValue; ?></strong> in food and drinks.</footer>
 </div>
 
 <style>

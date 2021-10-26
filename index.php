@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 //we are going to use session variables, so we need to enable sessions
 session_start();
-//$currentOrder =[];
-//$totalValue = 0;
+$currentPage = $_GET["food"];
 //your products with their price.
-if(!isset($_GET["food"]) || $_GET["food"]!=0){
+if($currentPage == NULL || $currentPage==1){
     $products = [
         ['name' => 'Club Ham', 'price' => 3.20],
         ['name' => 'Club Cheese', 'price' => 3],
@@ -15,8 +14,6 @@ if(!isset($_GET["food"]) || $_GET["food"]!=0){
         ['name' => 'Club Chicken', 'price' => 4],
         ['name' => 'Club Salmon', 'price' => 5]
     ];
-//    $currentOrder += getProducts();
-//    $totalValue += getTotalValue($currentOrder);
 } else {
     $products = [
         ['name' => 'Cola', 'price' => 2],
@@ -24,13 +21,13 @@ if(!isset($_GET["food"]) || $_GET["food"]!=0){
         ['name' => 'Sprite', 'price' => 2],
         ['name' => 'Ice-tea', 'price' => 3],
     ];
-//    $currentOrder += getProducts();
-//    $totalValue += getTotalValue($currentOrder);
 }
-//var_dump($currentOrder);
-const COOKIE_NAME = "totalSpent";
+
+//$click =0;
+//$addToOrder = true;
 $totalValue = 0;
 $totalSpentValue = 0;
+
 const REST_EMAIL = "sven.vander.mierde@gmail.com";
 
 //check and validate email
@@ -92,59 +89,92 @@ function validateZipcode($zip): string
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $error = 0;
-    $email = $_POST["email"];
-    $emailError = validateEmail($email);
-    if($emailError!=''){$error++;}
-    $street = $_POST["street"];
-    $streetError = validateStreet($street);
-    if($streetError!=''){$error++;}
-    $strNumber = $_POST["streetnumber"];
-    $strNumberError = validateStreetNumber($strNumber);
-    if($strNumberError!=''){$error++;}
-    $city = $_POST["city"];
-    $cityError = validateCity($city);
-    if($cityError!=''){$error++;}
-    $zipcode = $_POST["zipcode"];
-    $zipcodeError = validateZipcode($zipcode);
-    if($zipcodeError!=''){$error++;}
-    $order= getProducts();
-    $totalValue = getTotalValue($order);
-    if($totalValue==0) {
-        $error++;
-        $orderError = "please select products to order";
-    }
-    if(isset($_POST["express_delivery"])){
-        $deliveryTime = '45 minutes';
-        $expressPrice = $_POST["express_delivery"];
-        $expressPrice = (float)$expressPrice;
-        $totalValue += $expressPrice;
-        $express = true;
-    } else {
-        $deliveryTime = '2 hours';
-        $express = false;
-    }
-    if ($error == 0){
-        $mailToUser = "Thank you for ordering with us!\nDelivery adress: \n" . $street . " " . $strNumber. "\n"."Zipcode: " . $zipcode . " - City: " . $city . "\n";
-        foreach($order as $prod){
-            if($prod["quantity"]!=0){
-                $mailToUser.= $prod["name"] . " x " . $prod["quantity"] . " = EURO " . $prod["productTotal"] . "\n";
+//    if(isset($_POST["products"])){
+//        $order= getProducts();
+//        $totalValue = getTotalValue($order);
+//        if($_SESSION["basket"]!=[]){
+//            $_SESSION["basket"] = $order;
+//        } else {
+//            foreach($order as $newItem){
+//                foreach($_SESSION["basket"] as $item){
+//                    if ($item["name"] != $newItem["name"]){
+//                        array_push($_SESSION["basket"],$newItem);
+//                    } else {
+//                        $item["quantity"] = (int)$item["quantity"] + (int)$newItem["quantity"];
+//                        $item["productTotal"] += $newItem["productTotal"];
+//                    }
+//                }
+//            }
+//        }
+//        $click++;
+//        $addToOrder = false;
+//        $_SESSION["basketTotal"] +=$totalValue;
+//    }
+//    if($addToOrder == false && $click == 2) {
+        $email = $_POST["email"];
+        $emailError = validateEmail($email);
+        if ($emailError != '') {
+            $error++;
+        }
+        $street = $_POST["street"];
+        $streetError = validateStreet($street);
+        if ($streetError != '') {
+            $error++;
+        }
+        $strNumber = $_POST["streetnumber"];
+        $strNumberError = validateStreetNumber($strNumber);
+        if ($strNumberError != '') {
+            $error++;
+        }
+        $city = $_POST["city"];
+        $cityError = validateCity($city);
+        if ($cityError != '') {
+            $error++;
+        }
+        $zipcode = $_POST["zipcode"];
+        $zipcodeError = validateZipcode($zipcode);
+        if ($zipcodeError != '') {
+            $error++;
+        }
+        $order= getProducts();
+        $totalValue = getTotalValue($order);
+        if ($totalValue == 0) {
+            $error++;
+            $orderError = "please select products to order";
+        }
+        if (isset($_POST["express_delivery"])) {
+            $deliveryTime = '45 minutes';
+            $expressPrice = $_POST["express_delivery"];
+            $expressPrice = (float)$expressPrice;
+            $totalValue += $expressPrice;
+            $express = true;
+        } else {
+            $deliveryTime = '2 hours';
+            $express = false;
+        }
+        if ($error == 0) {
+            $mailToUser = "Thank you for ordering with us!\nDelivery adress: \n" . $street . " " . $strNumber . "\n" . "Zipcode: " . $zipcode . " - City: " . $city . "\n";
+            foreach ($order as $prod) {
+                if ($prod["quantity"] != 0) {
+                    $mailToUser .= $prod["name"] . " x " . $prod["quantity"] . " = EURO " . $prod["productTotal"] . "\n";
+                }
             }
-        }
-        if ($express == true){
-            $mailToUser .= "Express-delivery = EURO " . $expressPrice . "\n";
-        }
-        $mailToUser .= "Ordertotal: EURO " . $totalValue . "\n" . "Estimated delivery time: " . $deliveryTime . "\n";
-        $mailToOwner = "We got an order in!\n" . $mailToUser;
-        mail(REST_EMAIL, "new order!", $mailToOwner);
-        mail($email, "We got your order", $mailToUser);
-        $success = '<h2>Order sent successfully. Check your inbox!</h2>
+            if ($express == true) {
+                $mailToUser .= "Express-delivery = EURO " . $expressPrice . "\n";
+            }
+            $mailToUser .= "Ordertotal: EURO " . $totalValue . "\n" . "Estimated delivery time: " . $deliveryTime . "\n";
+            $mailToOwner = "We got an order in!\n" . $mailToUser;
+//        mail(REST_EMAIL, "new order!", $mailToOwner);
+//        mail($email, "We got your order", $mailToUser);
+            $success = '<h2>Order sent successfully. Check your inbox!</h2>
                     Your order is: <br>';
-    }
+        }
+   // }
 }
 
 function getProducts(): array
 {
-    $productsOrder = $_REQUEST["products"];
+    $productsOrder = $_POST["products"];
     global $products;
     $i = 0;
     $order = [];
