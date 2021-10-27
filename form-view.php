@@ -22,11 +22,19 @@
             </li>
         </ul>
     </nav>
+    <?php
+    if($emailError!=''){
+        echo '<div class="alert alert-danger">' . $emailError . '</div>';
+    }
+    if ($success!='') {
+        echo '<div class="alert alert-success">' . $success . '</div>';
+    }
+    ?>
     <form method="post">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="email">E-mail:</label>
-                <input type="text" id="email" name="email" class="form-control"/>
+                <input type="text" id="email" name="email" class="form-control" value="<?php if($_SESSION["email"]!=''){echo $_SESSION["email"];} ?>"<?php if($emailError!=''){echo 'style="border-color: #f5c6cb; background-color: #f8d7da"';}elseif($_SESSION["email"]!=''){echo 'style="border-color: #c3e6cb; background-color: #d4edda"';} ?>"/>
             </div>
             <div></div>
         </div>

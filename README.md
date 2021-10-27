@@ -22,6 +22,9 @@ from the files provided by [BeCode](https://github.com/becodeorg/ANT-Lamarr-5.34
   * must commit more often!
   * restarting code:
     * :thumbsup: products array and visual on the page switch between foods and drinks when clicking the nav links
-    * :thumbsdown: validate email
-    * :thumbsdown: save email to SESSION
-    * :thumbsdown: show error message when invalid email
+    * :thumbsup: validate email
+    * :thumbsup: save email to SESSION
+    * :thumbsup: show error message when invalid email
+    * :thumbsdown: validate street
+    * :thumbsdown: save street to session
+    * :thumbsdown: show error message when invalid street

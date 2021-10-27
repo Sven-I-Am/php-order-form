@@ -39,8 +39,46 @@ if (!isset($_GET["food"]) || $_GET["food"] != 0) {
     $currentPage = DrinksPage;
 }
 
-
-
+//initiating form values
+$email = "";
+//initiating form errors
+$emailError = "";
+//initiating other form values
+$success = "";
 $totalValue = 0;
+
+
+//when user clicks submit button $_POST gets populated
+if (!empty($_POST)) {
+    $error = 0; //we start with 0 errors
+    $email = $_POST["email"];
+    $emailError = validateEmail($email); //function to validate email address
+    if ($emailError != '') {
+        $error++;
+    }
+
+    if($error == 0){
+        $success = "Order sent";
+    }
+}
+
+/*---------*/
+/*FUNCTIONS*/
+/*---------*/
+
+//VALIDATION FUNCTIONS
+    //check and validate email
+    function validateEmail($email) : string
+    {
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $_SESSION["email"] = $email;
+            $emailError = "";
+        } else {
+            $emailError = 'Please enter a valid email';
+        }
+        return $emailError;
+    }
+
+
 whatIsHappening();
 require 'form-view.php';
