@@ -40,6 +40,9 @@ from the files provided by [BeCode](https://github.com/becodeorg/ANT-Lamarr-5.34
     * :thumbsup: calculate delivery time
       * found a way to use actual time instead of 'deliver in x hours' on [stackoverflow](https://stackoverflow.com/questions/1665702/time-calculation-in-php-add-10-hours)
     * :thumbsup: add delivery time to confirmation message
+    * :thumbsdown: calculate order total
+    * :thumbsdown: show order total in confirmation message
+    * :thumbsdown: show order summary in confirmation message
     * :thumbsdown: keep track of total spent by user (using COOKIE)
     * :thumbsdown: show the total spent at the bottom of the page
     * :thumbsdown: try keeping all this code within index.php
