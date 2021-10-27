@@ -51,6 +51,9 @@ $totalValue = 0;
 const BaseDTime = '120 minute';
 const ExpressDTime = '45 minute';
 const ExpressDCost = 5;
+//declare values for COOKIE
+const CookieName = 'totalSpent';
+$totalSpentValue = 0;
 
 //when user clicks submit button $_POST gets populated
 if (!empty($_POST)) {
@@ -81,10 +84,8 @@ if (!empty($_POST)) {
         $error++;
     }
     if (isset($_POST["products"])){
-        echo $_POST["products"];
         $_SESSION[$currentPage] = $_POST["products"];
         $order= getProducts($_SESSION[$currentPage]);
-        echo $order;
         $totalValue = getTotalValue($order);
     } else {
         $error++;
@@ -100,6 +101,13 @@ if (!empty($_POST)) {
             $deliveryTime = date('H:i', strtotime($currentTime . ExpressDTime));
             $totalValue += ExpressDCost;
         }
+        if (isset($_COOKIE[CookieName])) {
+            $totalSpentValue = (float)$_COOKIE[CookieName] + $totalValue;
+        } else {
+            $totalSpentValue += $totalValue;
+        }
+
+        setcookie(CookieName,  strval($totalSpentValue), time() + (86400 * 30), "/");
             $success = "<p><strong>Order sent at " . $currentTime . "</strong></p>
                         Estimated time of delivery: " . $deliveryTime;
             $success .="<br>Your order is: <br>";
@@ -203,5 +211,7 @@ function getTotalValue($order){
     return $totalValue;
 }
 
-whatIsHappening();
+
+
+//whatIsHappening();
 require 'form-view.php';

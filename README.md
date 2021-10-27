@@ -43,6 +43,10 @@ from the files provided by [BeCode](https://github.com/becodeorg/ANT-Lamarr-5.34
     * :thumbsup: calculate order total
     * :thumbsup: show order total in confirmation message
     * :thumbsup: show order summary in confirmation message
-    * :thumbsdown: keep track of total spent by user (using COOKIE)
-    * :thumbsdown: show the total spent at the bottom of the page
-    * :thumbsdown: try keeping all this code within index.php
+    * :thumbsup: keep track of total spent by user (using COOKIE)
+    * :thumbsup: show the total spent at the bottom of the page
+    * :thumbsup: try keeping all this code within index.php (thank you Siccofor the tip on error logs and strval($totalSpentValue))
+    * :thumbsdown: create email-message to user
+      * :thumbsdown: show order summary, order price and delivery time in the message
+    * :thumbsdown: create email-message to owner
+    * :thumbsdown: send email using mail() function
