@@ -34,6 +34,8 @@ from the files provided by [BeCode](https://github.com/becodeorg/ANT-Lamarr-5.34
     * :thumbsup: validate city
     * :thumbsup: save city to SESSION
     * :thumbsup: show error when invalid city
-    * :thumbsdown: validate zipcode
-    * :thumbsdown: save zipcode to SESSION
-    * :thumbsdown: show error when invalid zipcode
+    * :thumbsup: validate zipcode
+    * :thumbsup: save zipcode to SESSION
+    * :thumbsup show error when invalid zipcode
+    * :thumbsdown: calculate delivery time
+    * :thumbsdown: add delivery time to confirmation message

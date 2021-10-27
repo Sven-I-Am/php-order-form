@@ -23,8 +23,8 @@
         </ul>
     </nav>
     <?php
-    if($emailError!='' || $streetError!='' || $strNumberError!='' || $cityError !=''){
-        echo '<div class="alert alert-danger">' . $emailError . $streetError . $strNumberError . $cityError . '</div>';
+    if($emailError!='' || $streetError!='' || $strNumberError!='' || $cityError !='' || $zipcodeError !=''){
+        echo '<div class="alert alert-danger">' . $emailError . $streetError . $strNumberError . $cityError . $zipcodeError . '</div>';
     }
     if ($success!='') {
         echo '<div class="alert alert-success">' . $success . '</div>';
@@ -59,7 +59,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
-                    <input type="text" id="zipcode" name="zipcode" class="form-control">
+                    <input type="text" id="zipcode" name="zipcode" class="form-control" value="<?php if($_SESSION["zipcode"]!=''){echo $_SESSION["zipcode"];} ?>"<?php if($zipcodeError!=''){echo 'style="border-color: #f5c6cb; background-color: #f8d7da"';}elseif($_SESSION["zipcode"]!=''){echo 'style="border-color: #c3e6cb; background-color: #d4edda"';} ?>>
                 </div>
             </div>
         </fieldset>

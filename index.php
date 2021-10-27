@@ -72,6 +72,11 @@ if (!empty($_POST)) {
     if ($cityError != '') {
         $error++;
     }
+    $zipcode = $_POST["zipcode"];
+    $zipcodeError = validateZipcode($zipcode);
+    if ($zipcodeError != '') {
+        $error++;
+    }
 
     if($error == 0){
         $success = "Order sent";
@@ -126,6 +131,17 @@ if (!empty($_POST)) {
             $cityError = '<li>Please enter a valid city name</li>';
         }
         return $cityError;
+    }
+    //check and validate zipcode
+    function validateZipcode($zip): string
+    {
+    if(preg_match("/[^0-9]/", $zip) == 0 && $zip >= 1000 && $zip <= 9999) { //zipcodes in BE are always 4 numbers long, between 1000 and 9999
+        $_SESSION["zipcode"] = $zip;
+        $zipcodeError = "";
+    } else {
+    $zipcodeError = '<li>Please enter a valid zipcode: between 1000 and 9999</li>';
+    }
+    return $zipcodeError;
     }
 
 
