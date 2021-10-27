@@ -28,6 +28,9 @@ from the files provided by [BeCode](https://github.com/becodeorg/ANT-Lamarr-5.34
     * :thumbsup: validate street
     * :thumbsup: save street to session
     * :thumbsup: show error message when invalid street
-    * :thumbsdown: validate street number
-    * :thumbsdown: save street number to SESSION
-    * :thumbsdown: show error when invalid street number
+    * :thumbsup: validate street number
+    * :thumbsup: save street number to SESSION
+    * :thumbsup: show error when invalid street number
+    * :thumbsdown: validate city
+    * :thumbsdown: save city to SESSION
+    * :thumbsdown: show error when invalid city

@@ -62,6 +62,11 @@ if (!empty($_POST)) {
     if ($streetError != '') {
         $error++;
     }
+    $strNumber = $_POST["streetnumber"];
+    $strNumberError = validateStreetNumber($strNumber);
+    if ($strNumberError != '') {
+        $error++;
+    }
 
     if($error == 0){
         $success = "Order sent";
@@ -94,6 +99,17 @@ if (!empty($_POST)) {
             $streetError = '<li>Please enter a valid street name</li>';
         }
         return $streetError;
+    }
+    //check and validate house number
+    function validateStreetNumber($number): string
+    {
+        if (strlen($number)!=0 && preg_match("/[^0-9]/", $number) == 0){
+            $_SESSION["strNumber"] = $number;
+            $strNumberError = "";
+        } else {
+            $strNumberError = '<li>Please enter a valid streetnumber, only numbers are allowed!</li>';
+        }
+        return $strNumberError;
     }
 
 
