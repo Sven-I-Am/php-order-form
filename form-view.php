@@ -23,8 +23,8 @@
         </ul>
     </nav>
     <?php
-    if($emailError!='' || $streetError!='' || $strNumberError!=''){
-        echo '<div class="alert alert-danger">' . $emailError . $streetError . $strNumberError . '</div>';
+    if($emailError!='' || $streetError!='' || $strNumberError!='' || $cityError !=''){
+        echo '<div class="alert alert-danger">' . $emailError . $streetError . $strNumberError . $cityError . '</div>';
     }
     if ($success!='') {
         echo '<div class="alert alert-success">' . $success . '</div>';
@@ -55,7 +55,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="city">City:</label>
-                    <input type="text" id="city" name="city" class="form-control">
+                    <input type="text" id="city" name="city" class="form-control" value="<?php if($_SESSION["city"]!=''){echo $_SESSION["city"];} ?>"<?php if($cityError!=''){echo 'style="border-color: #f5c6cb; background-color: #f8d7da"';}elseif($_SESSION["city"]!=''){echo 'style="border-color: #c3e6cb; background-color: #d4edda"';} ?>>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>

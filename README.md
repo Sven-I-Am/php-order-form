@@ -31,6 +31,9 @@ from the files provided by [BeCode](https://github.com/becodeorg/ANT-Lamarr-5.34
     * :thumbsup: validate street number
     * :thumbsup: save street number to SESSION
     * :thumbsup: show error when invalid street number
-    * :thumbsdown: validate city
-    * :thumbsdown: save city to SESSION
-    * :thumbsdown: show error when invalid city
+    * :thumbsup: validate city
+    * :thumbsup: save city to SESSION
+    * :thumbsup: show error when invalid city
+    * :thumbsdown: validate zipcode
+    * :thumbsdown: save zipcode to SESSION
+    * :thumbsdown: show error when invalid zipcode

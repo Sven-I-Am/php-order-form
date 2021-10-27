@@ -67,6 +67,11 @@ if (!empty($_POST)) {
     if ($strNumberError != '') {
         $error++;
     }
+    $city = $_POST["city"];
+    $cityError = validateCity($city);
+    if ($cityError != '') {
+        $error++;
+    }
 
     if($error == 0){
         $success = "Order sent";
@@ -110,6 +115,17 @@ if (!empty($_POST)) {
             $strNumberError = '<li>Please enter a valid streetnumber, only numbers are allowed!</li>';
         }
         return $strNumberError;
+    }
+    //check and validate city name
+    function validateCity($city): string
+    {
+        if (strlen($city)>=2 && strlen($city)<=26 && preg_match("/[0-9]/", $city) == 0){ //shortest city name in BE is 2 letters, longest is 26
+            $_SESSION["city"] = $city;
+            $cityError = "";
+        }else{
+            $cityError = '<li>Please enter a valid city name</li>';
+        }
+        return $cityError;
     }
 
 
