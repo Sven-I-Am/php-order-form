@@ -23,7 +23,7 @@
         </ul>
     </nav>
     <?php
-    if($emailError!='' || $streetError!='' || $strNumberError!='' || $cityError !='' || $zipcodeError !=''){
+    if($emailError != '' || $streetError != '' || $strNumberError != '' || $cityError != '' || $zipcodeError != ''){
         echo '<div class="alert alert-danger">' . $emailError . $streetError . $strNumberError . $cityError . $zipcodeError . '</div>';
     }
     if ($success!='') {

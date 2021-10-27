@@ -2,7 +2,7 @@
 //this line makes PHP behave in a more strict way
 declare(strict_types=1);
 
-//we are going to use session variables so we need to enable sessions
+//we are going to use session variables, so we need to enable sessions
 session_start();
 
 function whatIsHappening() {
@@ -40,14 +40,17 @@ if (!isset($_GET["food"]) || $_GET["food"] != 0) {
 }
 
 //initiating form values
-$email = "";
+$email = $street= $strNumber = $city = $zipcode = "";
 //initiating form errors
-$emailError = "";
+$emailError = $streetError = $strNumberError = $cityError = $zipcodeError = "";
 //initiating other form values
 $success = "";
 $error = 0;
 $totalValue = 0;
-
+//declaring constants for express delivery
+const BaseDTime = '120 minute';
+const ExpressDTime = '45 minute';
+const ExpressDCost = 5;
 
 //when user clicks submit button $_POST gets populated
 if (!empty($_POST)) {
@@ -79,8 +82,20 @@ if (!empty($_POST)) {
     }
 
     if($error == 0){
-        $success = "Order sent";
+        //set now time
+        $currentTime = date("H:i");
+        $deliveryTime = date('H:i', strtotime($currentTime . BaseDTime));
+        $express = false;
+        if (isset($_POST["express_delivery"])){
+            $express = true;
+            $deliveryTime = date('H:i', strtotime($currentTime . ExpressDTime));
+            $totalValue += ExpressDCost;
+        }
+        $success = "<p><strong>Order sent at " . $currentTime . "</strong></p>
+                    Estimated time of delivery: " . $deliveryTime;
+
     }
+
 }
 
 /*---------*/
@@ -143,7 +158,6 @@ if (!empty($_POST)) {
     }
     return $zipcodeError;
     }
-
 
 whatIsHappening();
 require 'form-view.php';
