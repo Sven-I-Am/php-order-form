@@ -80,7 +80,16 @@ if (!empty($_POST)) {
     if ($zipcodeError != '') {
         $error++;
     }
-
+    if (isset($_POST["products"])){
+        echo $_POST["products"];
+        $_SESSION[$currentPage] = $_POST["products"];
+        $order= getProducts($_SESSION[$currentPage]);
+        echo $order;
+        $totalValue = getTotalValue($order);
+    } else {
+        $error++;
+        $orderError = "<li>please select products to order</li>";
+    }
     if($error == 0){
         //set now time
         $currentTime = date("H:i");
@@ -91,8 +100,16 @@ if (!empty($_POST)) {
             $deliveryTime = date('H:i', strtotime($currentTime . ExpressDTime));
             $totalValue += ExpressDCost;
         }
-        $success = "<p><strong>Order sent at " . $currentTime . "</strong></p>
-                    Estimated time of delivery: " . $deliveryTime;
+            $success = "<p><strong>Order sent at " . $currentTime . "</strong></p>
+                        Estimated time of delivery: " . $deliveryTime;
+            $success .="<br>Your order is: <br>";
+        foreach($order as $prod){
+            $success .= $prod["name"] . " x " . $prod["quantity"] . " = &euro;" . $prod["productTotal"] . "<br>";
+        }
+        if ($express == true){
+            $success .= "Express-delivery = &euro;" . ExpressDCost;
+        }
+        $success .= '<p><strong>Ordertotal: &euro;' . $totalValue . '</strong></p>';
 
     }
 
@@ -158,6 +175,33 @@ if (!empty($_POST)) {
     }
     return $zipcodeError;
     }
+//CALCULATION FUNCTIONS
+//get all products into an array
+function getProducts($current): array
+{
+    global $products;
+    $order = [];
+    foreach($current as$i=>$product) {
+        $name = $products[$i]["name"];
+        $price = $products[$i]["price"];
+        $price = (float)$price;
+        $quantity = $product;
+        $productTotal = $quantity * $price;
+        $productOrder = ['name'=>$name, 'price'=>$price, 'quantity'=>$quantity,'productTotal'=>$productTotal];
+        if($quantity>0){
+            array_push($order, $productOrder); //only add to order if the product has a quantity of more than 0
+        }
+    }
+    return $order;
+}
+//get total of order
+function getTotalValue($order){
+    global $totalValue;
+    foreach ($order as $prod){
+        $totalValue += $prod["productTotal"];
+    }
+    return $totalValue;
+}
 
 whatIsHappening();
 require 'form-view.php';

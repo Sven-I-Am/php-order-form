@@ -23,8 +23,8 @@
         </ul>
     </nav>
     <?php
-    if($emailError != '' || $streetError != '' || $strNumberError != '' || $cityError != '' || $zipcodeError != ''){
-        echo '<div class="alert alert-danger">' . $emailError . $streetError . $strNumberError . $cityError . $zipcodeError . '</div>';
+    if($emailError != '' || $streetError != '' || $strNumberError != '' || $cityError != '' || $zipcodeError != '' || $orderError != ''){
+        echo '<div class="alert alert-danger">' . $emailError . $streetError . $strNumberError . $cityError . $zipcodeError . $orderError . '</div>';
     }
     if ($success!='') {
         echo '<div class="alert alert-success">' . $success . '</div>';
