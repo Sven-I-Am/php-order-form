@@ -25,6 +25,9 @@ from the files provided by [BeCode](https://github.com/becodeorg/ANT-Lamarr-5.34
     * :thumbsup: validate email
     * :thumbsup: save email to SESSION
     * :thumbsup: show error message when invalid email
-    * :thumbsdown: validate street
-    * :thumbsdown: save street to session
-    * :thumbsdown: show error message when invalid street
+    * :thumbsup: validate street
+    * :thumbsup: save street to session
+    * :thumbsup: show error message when invalid street
+    * :thumbsdown: validate street number
+    * :thumbsdown: save street number to SESSION
+    * :thumbsdown: show error when invalid street number

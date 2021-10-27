@@ -45,6 +45,7 @@ $email = "";
 $emailError = "";
 //initiating other form values
 $success = "";
+$error = 0;
 $totalValue = 0;
 
 
@@ -54,6 +55,11 @@ if (!empty($_POST)) {
     $email = $_POST["email"];
     $emailError = validateEmail($email); //function to validate email address
     if ($emailError != '') {
+        $error++;
+    }
+    $street = $_POST["street"];
+    $streetError = validateStreet($street);
+    if ($streetError != '') {
         $error++;
     }
 
@@ -74,9 +80,20 @@ if (!empty($_POST)) {
             $_SESSION["email"] = $email;
             $emailError = "";
         } else {
-            $emailError = 'Please enter a valid email';
+            $emailError = '<li>Please enter a valid email</li>';
         }
         return $emailError;
+    }
+    //check and validate street name
+    function validateStreet($street): string
+    {
+        if (strlen($street)>=3 && strlen($street)<=44 && preg_match("/[0-9]/", $street) == 0){ //shortest street in BE has 3 letters, longest has 44
+            $_SESSION["street"] = $street;
+            $streetError ="";
+        }else{
+            $streetError = '<li>Please enter a valid street name</li>';
+        }
+        return $streetError;
     }
 
 

@@ -23,8 +23,8 @@
         </ul>
     </nav>
     <?php
-    if($emailError!=''){
-        echo '<div class="alert alert-danger">' . $emailError . '</div>';
+    if($emailError!='' || $streetError!=''){
+        echo '<div class="alert alert-danger">' . $emailError . $streetError . '</div>';
     }
     if ($success!='') {
         echo '<div class="alert alert-success">' . $success . '</div>';
@@ -45,7 +45,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="street">Street:</label>
-                    <input type="text" name="street" id="street" class="form-control">
+                    <input type="text" name="street" id="street" class="form-control" value="<?php if($_SESSION["street"]!=''){echo $_SESSION["street"];} ?>"<?php if($streetError!=''){echo 'style="border-color: #f5c6cb; background-color: #f8d7da"';}elseif($_SESSION["street"]!=''){echo 'style="border-color: #c3e6cb; background-color: #d4edda"';} ?>>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
