@@ -20,3 +20,8 @@ from the files provided by [BeCode](https://github.com/becodeorg/ANT-Lamarr-5.34
 * day 3
   * can't figure out the issue with the drinks order so decided to scrap code and start again
   * must commit more often!
+  * restarting code:
+    * :thumbsup: products array and visual on the page switch between foods and drinks when clicking the nav links
+    * :thumbsdown: validate email
+    * :thumbsdown: save email to SESSION
+    * :thumbsdown: show error message when invalid email
