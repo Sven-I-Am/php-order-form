@@ -53,7 +53,11 @@ const ExpressDTime = '45 minute';
 const ExpressDCost = 5;
 //declare values for COOKIE
 const CookieName = 'totalSpent';
-$totalSpentValue = 0;
+if (isset($_COOKIE[CookieName])) {
+    $totalSpentValue = (float)$_COOKIE[CookieName];
+} else {
+    $totalSpentValue = 0;
+}
 //declare constant owner email adress
 const RestEmail = "sven.vander.mierde@gmail.com";
 
@@ -108,7 +112,6 @@ if (!empty($_POST)) {
         } else {
             $totalSpentValue += $totalValue;
         }
-
         setcookie(CookieName,  strval($totalSpentValue), time() + (86400 * 30), "/");
         //create email message for user and owner
         $mailToUser = "Thank you for ordering with us!\nDelivery adress: \n" . $street . " " . $strNumber . "\n" . "Zipcode: " . $zipcode . " - City: " . $city . "\n";
@@ -119,12 +122,14 @@ if (!empty($_POST)) {
         }
         $mailToUser .= "Ordertotal: EURO " . $totalValue . "\n" . "Estimated delivery time: " . $deliveryTime . "\n";
         $mailToOwner = "We got an order in!\nSee below for information:\n" . $mailToUser;
+        /*comment out mail() function for testing purposes
         mail(RestEmail, "new order!", $mailToOwner);
         mail($email, "We got your order", $mailToUser);
+        */
         //create confirmation message after email is sent
-            $success = "<p><strong>Order sent at " . $currentTime . "</strong></p>
+        $success = "<p><strong>Order sent at " . $currentTime . "</strong></p>
                         Estimated time of delivery: " . $deliveryTime;
-            $success .="<br>Your order is: <br>";
+        $success .="<br>Your order is: <br>";
         foreach($order as $prod){
             $success .= $prod["name"] . " x " . $prod["quantity"] . " = &euro;" . $prod["productTotal"] . "<br>";
         }
@@ -142,61 +147,61 @@ if (!empty($_POST)) {
 /*---------*/
 
 //VALIDATION FUNCTIONS
-    //check and validate email
-    function validateEmail($email) : string
-    {
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $_SESSION["email"] = $email;
-            $emailError = "";
-        } else {
-            $emailError = '<li>Please enter a valid email</li>';
-        }
-        return $emailError;
+//check and validate email
+function validateEmail($email) : string
+{
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION["email"] = $email;
+        $emailError = "";
+    } else {
+        $emailError = '<li>Please enter a valid email</li>';
     }
-    //check and validate street name
-    function validateStreet($street): string
-    {
-        if (strlen($street)>=3 && strlen($street)<=44 && preg_match("/[0-9]/", $street) == 0){ //shortest street in BE has 3 letters, longest has 44
-            $_SESSION["street"] = $street;
-            $streetError ="";
-        }else{
-            $streetError = '<li>Please enter a valid street name</li>';
-        }
-        return $streetError;
+    return $emailError;
+}
+//check and validate street name
+function validateStreet($street): string
+{
+    if (strlen($street)>=3 && strlen($street)<=44 && preg_match("/[0-9]/", $street) == 0){ //shortest street in BE has 3 letters, longest has 44
+        $_SESSION["street"] = $street;
+        $streetError ="";
+    }else{
+        $streetError = '<li>Please enter a valid street name</li>';
     }
-    //check and validate house number
-    function validateStreetNumber($number): string
-    {
-        if (strlen($number)!=0 && preg_match("/[^0-9]/", $number) == 0){
-            $_SESSION["strNumber"] = $number;
-            $strNumberError = "";
-        } else {
-            $strNumberError = '<li>Please enter a valid streetnumber, only numbers are allowed!</li>';
-        }
-        return $strNumberError;
+    return $streetError;
+}
+//check and validate house number
+function validateStreetNumber($number): string
+{
+    if (strlen($number)!=0 && preg_match("/[^0-9]/", $number) == 0){
+        $_SESSION["strNumber"] = $number;
+        $strNumberError = "";
+    } else {
+        $strNumberError = '<li>Please enter a valid streetnumber, only numbers are allowed!</li>';
     }
-    //check and validate city name
-    function validateCity($city): string
-    {
-        if (strlen($city)>=2 && strlen($city)<=26 && preg_match("/[0-9]/", $city) == 0){ //shortest city name in BE is 2 letters, longest is 26
-            $_SESSION["city"] = $city;
-            $cityError = "";
-        }else{
-            $cityError = '<li>Please enter a valid city name</li>';
-        }
-        return $cityError;
+    return $strNumberError;
+}
+//check and validate city name
+function validateCity($city): string
+{
+    if (strlen($city)>=2 && strlen($city)<=26 && preg_match("/[0-9]/", $city) == 0){ //shortest city name in BE is 2 letters, longest is 26
+        $_SESSION["city"] = $city;
+        $cityError = "";
+    }else{
+        $cityError = '<li>Please enter a valid city name</li>';
     }
-    //check and validate zipcode
-    function validateZipcode($zip): string
-    {
+    return $cityError;
+}
+//check and validate zipcode
+function validateZipcode($zip): string
+{
     if(preg_match("/[^0-9]/", $zip) == 0 && $zip >= 1000 && $zip <= 9999) { //zipcodes in BE are always 4 numbers long, between 1000 and 9999
         $_SESSION["zipcode"] = $zip;
         $zipcodeError = "";
     } else {
-    $zipcodeError = '<li>Please enter a valid zipcode: between 1000 and 9999</li>';
+        $zipcodeError = '<li>Please enter a valid zipcode: between 1000 and 9999</li>';
     }
     return $zipcodeError;
-    }
+}
 //CALCULATION FUNCTIONS
 //get all products into an array
 function getProducts($current): array

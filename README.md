@@ -50,7 +50,7 @@ from the files provided by [BeCode](https://github.com/becodeorg/ANT-Lamarr-5.34
       * :thumbsup: show order summary, order price and delivery time in the message
     * :thumbsup: create email-message to owner
     * :thumbsup: send email using mail() function
-    * :thumbsdown: allow for ordering with numeric values instead of checkboxes
-    * :thumbsdown: allow for ordering drinks and foods with one order
-      * :thumbsdown: no using JavaScript
-      * :thumbsdown: keep the functionality of switching between foods and drinks on the page
+    * :thumbsup: allow for ordering with numeric values instead of checkboxes
+    * :x: allow for ordering drinks and foods with one order
+      * :x: no using JavaScript
+      * :x: keep the functionality of switching between foods and drinks on the page
