@@ -54,6 +54,8 @@ const ExpressDCost = 5;
 //declare values for COOKIE
 const CookieName = 'totalSpent';
 $totalSpentValue = 0;
+//declare constant owner email adress
+const RestEmail = "sven.vander.mierde@gmail.com";
 
 //when user clicks submit button $_POST gets populated
 if (!empty($_POST)) {
@@ -108,6 +110,18 @@ if (!empty($_POST)) {
         }
 
         setcookie(CookieName,  strval($totalSpentValue), time() + (86400 * 30), "/");
+        //create email message for user and owner
+        $mailToUser = "Thank you for ordering with us!\nDelivery adress: \n" . $street . " " . $strNumber . "\n" . "Zipcode: " . $zipcode . " - City: " . $city . "\n";
+        foreach ($order as $prod) {
+            if ($prod["quantity"] != 0) {
+                $mailToUser .= $prod["name"] . " x " . $prod["quantity"] . " = EURO " . $prod["productTotal"] . "\n";
+            }
+        }
+        $mailToUser .= "Ordertotal: EURO " . $totalValue . "\n" . "Estimated delivery time: " . $deliveryTime . "\n";
+        $mailToOwner = "We got an order in!\nSee below for information:\n" . $mailToUser;
+        mail(RestEmail, "new order!", $mailToOwner);
+        mail($email, "We got your order", $mailToUser);
+        //create confirmation message after email is sent
             $success = "<p><strong>Order sent at " . $currentTime . "</strong></p>
                         Estimated time of delivery: " . $deliveryTime;
             $success .="<br>Your order is: <br>";
